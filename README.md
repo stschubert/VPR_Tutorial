@@ -4,7 +4,7 @@
 ```
 python3 demo.py
 ```
-The GardensPoints Walking dataset will be automatically downloaded.
+The GardensPoints Walking dataset will be downloaded automatically.
 
 ## Requirements
 - matplotlib==3.1.2
