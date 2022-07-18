@@ -21,3 +21,5 @@ The GardensPoints Walking dataset will be downloaded automatically.
 - run HDC for feature aggregation into holistic descriptors
 - perform full descriptor comparison to obtain similarity matrix S
 - evaluation (precision-recall curve and AUC)
+
+## List of existing open-source implementations
