@@ -15,7 +15,7 @@ The GardensPoints Walking dataset will be downloaded automatically.
 - tensorflow==2.8.0
 - tensorflow_hub==0.12.0
 
-## Currently implemented:
+## Currently implemented
 - download and load images
 - compute DELF descriptors
 - run HDC for feature aggregation into holistic descriptors
@@ -23,3 +23,4 @@ The GardensPoints Walking dataset will be downloaded automatically.
 - evaluation (precision-recall curve and AUC)
 
 ## List of existing open-source implementations
+- ...
