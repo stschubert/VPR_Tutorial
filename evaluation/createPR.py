@@ -18,9 +18,10 @@
 import numpy as np
 
 
-def createPR(S, GThard, GTsoft):
+def createPR(S_in, GThard, GTsoft):
     GT = GThard.astype('bool')  # ensure logical-datatype
     GTsoft = GTsoft.astype('bool')
+    S = S_in.copy()
     S[GTsoft & ~GT] = S.min()
 
     # init precision and recall vectors
