@@ -8,6 +8,24 @@ python3 demo.py
 ```
 The GardensPoints Walking dataset will be downloaded automatically.
 
+### Expected Output
+You should get an output similar to this:
+```
+python3 demo.py
+===== Load dataset
+===== Load dataset GardensPoint day_right--night_right
+===== Compute local DELF descriptors
+===== Compute holistic HDC-DELF descriptors
+===== Compute cosine similarities S
+===== Match images
+===== Evaluation
+
+===== AUC (area under curve): 0.7419284432277942 
+```
+![precision-recall curve P=f(R)](output_images/pr_curve.jpg)
+![matchings M](output_images/matchings.jpg)
+![Examples for true positive (TP) and false positive (FP)](output_images/examples_tp_fp.jpg)
+
 ## Requirements
 The code was tested with the following library versions:
 ```
