@@ -1,5 +1,5 @@
 #   =====================================================================
-#   Copyright (C) 2022  Stefan Schubert, stefan.schubert@etit.tu-chemnitz.de
+#   Copyright (C) 2023  Stefan Schubert, stefan.schubert@etit.tu-chemnitz.de
 #
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
