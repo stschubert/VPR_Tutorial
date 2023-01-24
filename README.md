@@ -1,5 +1,5 @@
 # VPR_Tutorial
-This repository provides the example code from our ongoing work about a tutorial for visual place recognition (VPR) and is work in progress.
+Work in progress: This repository provides the example code from our ongoing work on a tutorial for visual place recognition (VPR).
 The code performs VPR on the GardensPoint day_right--night_right dataset. Output is a plotted pr-curve and the AUC performance, as shown below.
 
 ## How to run the code
