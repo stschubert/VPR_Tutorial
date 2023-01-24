@@ -22,9 +22,10 @@ python3 demo.py
 
 ===== AUC (area under curve): 0.7419284432277942 
 ```
-![precision-recall curve P=f(R)](output_images/pr_curve.jpg)
-![matchings M](output_images/matchings.jpg)
-![Examples for true positive (TP) and false positive (FP)](output_images/examples_tp_fp.jpg)
+
+Precision-recall curve          |  Matchings M | Examples for true positive and false positive
+:-------------------------:|:-------------------------:
+<img src="output_images/pr_curve.jpg" alt="precision-recall curve P=f(R)" height="200">  |  <img src="output_images/matchings.jpg" alt="output_images/matchings.jpg" height="200"> | <img src="output_images/examples_tp_fp.jpg" alt="Examples for true positive (TP) and false positive (FP)" height="200"> 
 
 ## Requirements
 The code was tested with the following library versions:
