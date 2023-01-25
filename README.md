@@ -1,6 +1,7 @@
-# VPR_Tutorial
+# Visual Place Recognition: A Tutorial
 Work in progress: This repository provides the example code from our ongoing work on a tutorial for visual place recognition (VPR).
 The code performs VPR on the GardensPoint day_right--night_right dataset. Output is a plotted pr-curve and the AUC performance, as shown below.
+
 
 ## How to run the code
 ```
@@ -8,7 +9,8 @@ python3 demo.py
 ```
 The GardensPoints Walking dataset will be downloaded automatically.
 
-### Expected Output
+
+### Expected output
 You should get an output similar to this:
 ```
 python3 demo.py
@@ -27,6 +29,7 @@ python3 demo.py
 |:-------------------------:|:-------------------------:|:-------------------------:|
 |<img src="output_images/pr_curve.jpg" alt="precision-recall curve P=f(R)" height="200" width="auto">  |  <img src="output_images/matchings.jpg" alt="output_images/matchings.jpg" height="200" width="auto"> | <img src="output_images/examples_tp_fp.jpg" alt="Examples for true positive (TP) and false positive (FP)" height="200" width="auto">| 
 
+
 ## Requirements
 The code was tested with the following library versions:
 ```
@@ -40,15 +43,31 @@ pipreqs VPR_Tutorial/ --print
 - skimage==0.0
 - tensorflow==2.10.0
 - tensorflow_hub==0.12.0
+- 
 
+## List of existing open-source implementations for VPR
+<table>
+    <thead>
+        <tr>
+            <th>Method</th>
+            <th colspan=4>Assumption or additional information</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <th></th>
+            <th>Local descriptor</th>
+            <th>Holistic descriptor</th>
+            <th>Sequences</th>
+            <th>Intra-set similarities</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><a href="https://www.tu-chemnitz.de/etit/proaut/en/research/prstructure.html">ICM</a></td>
+            <td>-</td> <td>-</td> <td>yes</td> <td>yes</td>
+            <td>Graph optimization of the similarity matrix S</td>
+        </tr>
+    </tbody>
+</table>
 
-## Currently implemented
-- download and load images
-- compute DELF descriptors
-- run HDC for feature aggregation into holistic descriptors
-- perform full descriptor comparison to obtain similarity matrix S
-- match images using the best match per query or an automatic thresholding
-- evaluation (precision-recall curve and AUC)
-
-## List of existing open-source implementations
-- ...
