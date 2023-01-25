@@ -25,7 +25,7 @@ python3 demo.py
 
 | Precision-recall curve | Matchings M | Examples for a true positive and a false positive |
 |:-------------------------:|:-------------------------:|:-------------------------:|
-|<img src="output_images/pr_curve.jpg" alt="precision-recall curve P=f(R)" height="200">  |  <img src="output_images/matchings.jpg" alt="output_images/matchings.jpg" height="200"> | <img src="output_images/examples_tp_fp.jpg" alt="Examples for true positive (TP) and false positive (FP)" height="200">| 
+|<img src="output_images/pr_curve.jpg" alt="precision-recall curve P=f(R)" height="200" width="auto">  |  <img src="output_images/matchings.jpg" alt="output_images/matchings.jpg" height="200" width="auto"> | <img src="output_images/examples_tp_fp.jpg" alt="Examples for true positive (TP) and false positive (FP)" height="200" width="auto">| 
 
 ## Requirements
 The code was tested with the following library versions:
