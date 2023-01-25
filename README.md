@@ -43,7 +43,7 @@ pipreqs VPR_Tutorial/ --print
 - skimage==0.0
 - tensorflow==2.10.0
 - tensorflow_hub==0.12.0
-- 
+
 
 ## List of existing open-source implementations for VPR
 <table>
