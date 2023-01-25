@@ -46,28 +46,32 @@ pipreqs VPR_Tutorial/ --print
 
 
 ## List of existing open-source implementations for VPR
+[//]: # (use <td colspan=3> or rowspan to combine cells)
 <table>
     <thead>
         <tr>
             <th>Method</th>
-            <th colspan=4>Assumption or additional information</th>
+            <th>Paper</th>
             <th>Description</th>
-        </tr>
-        <tr>
-            <th></th>
-            <th>Local descriptor</th>
-            <th>Holistic descriptor</th>
-            <th>Sequences</th>
-            <th>Intra-set similarities</th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td><a href="https://www.tu-chemnitz.de/etit/proaut/en/research/prstructure.html">ICM</a></td>
-            <td>-</td> <td>-</td> <td>yes</td> <td>yes</td>
+            <td><a href="http://doi.org/10.15607/RSS.2021.XVII.091">paper</a></td>
             <td>Graph optimization of the similarity matrix S</td>
+        </tr>
+        <tr>
+            <td><a href="https://www.di.ens.fr/willow/research/netvlad/">NetVLAD</a></td>
+            <td><a href="https://doi.org/10.1109/CVPR.2016.572">paper</a></td>
+            <td>Holistic descriptor</td>
+        </tr>
+        <tr>
+            <td><a href="url">method</a></td>
+            <td><a href="url">paper</a></td>
+            <td></td>
         </tr>
     </tbody>
 </table>
+
 
