@@ -77,7 +77,7 @@ ax2.axis('off')
 ax2.set_title('Thresholding S>=thresh')
 
 # PR-curve
-P, R = createPR(S, GThard, GTsoft)
+P, R = createPR(S, GThard, GTsoft, matching='multi', n_thresh=100)
 plt.figure()
 plt.plot(R, P)
 plt.xlim(0, 1), plt.ylim(0, 1.01)
