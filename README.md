@@ -1,6 +1,18 @@
 # Visual Place Recognition: A Tutorial
-Work in progress: This repository provides the example code from our ongoing work on a tutorial for visual place recognition (VPR).
-The code performs VPR on the GardensPoint day_right--night_right dataset. Output is a plotted pr-curve and the AUC performance, as shown below.
+Work in progress: This repository provides the example code from <a href="https://arxiv.org/abs/2303.03281">our paper "Visual Place Recognition: A Tutorial"</a>.
+The code performs VPR on the GardensPoint day_right--night_right dataset. Output is a plotted pr-curve, matching decisions, two examples for a true-positive and a false-positive matching, and the AUC performance, as shown below.
+
+If you use our work for your academic research, please refer to the following paper:
+```bibtex
+@article{SchubertVisual,
+    title={Visual Place Recognition: A Tutorial},
+    author={Stefan Schubert and Peer Neubert and Sourav Garg and Michael Milford and Tobias Fischer},
+    journal={arXiv 2303.03281},
+    year={2023},
+}
+```
+
+
 
 
 ## How to run the code
