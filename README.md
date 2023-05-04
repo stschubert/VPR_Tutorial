@@ -61,7 +61,7 @@ pipreqs VPR_Tutorial/ --print
 [//]: # (use <td colspan=3> or rowspan to combine cells)
 
 
-###Descriptors
+### Descriptors
 #### Holistic descriptors
 <table>
     <tbody>
