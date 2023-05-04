@@ -15,7 +15,7 @@ If you use our work for your academic research, please refer to the following pa
 
 ## How to run the code
 ### Online
-We provide the Jupyter Notebook [demo.ipynb](./demo.ipynb) that runs the codes, shows intermediate results, and provides some additional explanations.
+We provide the Jupyter Notebook [demo.ipynb](./demo.ipynb) that runs the code, shows intermediate results, and provides some additional explanations.
 
 ### Local
 ```
