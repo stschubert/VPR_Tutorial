@@ -199,7 +199,6 @@ pipreqs VPR_Tutorial/ --print
             <td><a href="https://www.tu-chemnitz.de/etit/proaut/en/research/prstructure.html">code</a></td>
             <td><a href="http://doi.org/10.15607/RSS.2021.XVII.091">paper</a></td>
         </tr>
-
         <tr>
             <td><a href="">SeqNet</a></td>
             <td><a href="https://github.com/oravus/seqNet">code</a></td>
