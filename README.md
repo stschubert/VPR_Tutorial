@@ -21,11 +21,7 @@ We provide a Jupyter Notebook [demo.ipynb](./demo.ipynb) that runs the codes, sh
 ```
 python3 demo.py
 ```
-The GardensPoints Walking dataset will be downloaded automatically.
-
-
-### Expected output
-You should get an output similar to this:
+The GardensPoints Walking dataset will be downloaded automatically. You should get an output similar to this:
 ```
 python3 demo.py
 ===== Load dataset
