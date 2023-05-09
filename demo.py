@@ -15,7 +15,7 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #   =====================================================================
 #
-from evaluation.createPR import createPR
+from evaluation.metrics import createPR, recallAt100precision, recallAtK
 from evaluation import show_correct_and_wrong_matches
 from matching import matching
 from feature_aggregation.hdc import hdc
@@ -89,4 +89,14 @@ plt.draw()
 
 # area under curve (AUC)
 AUC = np.trapz(P, R)
-print('\n===== AUC (area under curve):', AUC, '\n')
+print('\n===== AUC (area under curve):', AUC)
+
+# maximum recall at 100% precision
+maxR = recallAt100precision(S, GThard, GTsoft, matching='multi', n_thresh=100)
+print('\n===== R@100P (maximum recall at 100% precision):', maxR)
+
+# recall at K
+Rat1 = recallAtK(S, GThard, GTsoft, K=1)
+Rat5 = recallAtK(S, GThard, GTsoft, K=5)
+Rat10 = recallAtK(S, GThard, GTsoft, K=10)
+print('\n===== recall@K (R@K) -- R@1:', Rat1, ', R@5:', Rat5, ', R@10:', Rat10)
