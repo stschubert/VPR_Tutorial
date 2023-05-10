@@ -18,28 +18,41 @@
 from evaluation.metrics import createPR, recallAt100precision, recallAtK
 from evaluation import show_correct_and_wrong_matches
 from matching import matching
-from feature_aggregation.hdc import hdc
 from load_dataset import gardenspoint
-from compute_local_descriptors import compute_delf
 import numpy as np
 
 from matplotlib import pyplot as plt
 plt.ion()
 
+# parameter
+param_descriptor = 'HDC-DELF' # select: 'HDC-DELF', 'AlexNet'
 
 # load dataset
 print('===== Load dataset')
 db_imgs, q_imgs, GThard, GTsoft = gardenspoint()
 
-# compute local descriptors
-print('===== Compute local DELF descriptors')
-db_D = compute_delf(db_imgs)
-q_D = compute_delf(q_imgs)
+# compute holistic descriptors
+if param_descriptor == 'HDC-DELF':
+    from feature_aggregation.hdc import hdc
+    from compute_local_descriptors import compute_delf
 
-# feature aggregation, i.e., local->holistic descriptors
-print('===== Compute holistic HDC-DELF descriptors')
-db_D_holistic = hdc(db_D).compute_holistic()
-q_D_holistic = hdc(q_D).compute_holistic()
+    # compute local descriptors
+    print('===== Compute local DELF descriptors')
+    db_D = compute_delf(db_imgs)
+    q_D = compute_delf(q_imgs)
+
+    # feature aggregation, i.e., local->holistic descriptors
+    print('===== Compute holistic HDC-DELF descriptors')
+    db_D_holistic = hdc(db_D).compute_holistic()
+    q_D_holistic = hdc(q_D).compute_holistic()
+
+elif param_descriptor == 'AlexNet':
+    from compute_holistic_descriptors import compute_alexnet_conv3
+
+    # compute holist descriptor
+    print('===== Compute holistic AlexNet descriptors')
+    db_D_holistic = compute_alexnet_conv3(db_imgs)
+    q_D_holistic = compute_alexnet_conv3(q_imgs)
 
 # normalize descriptors and compute S-matrix
 print('===== Compute cosine similarities S')
