@@ -33,6 +33,8 @@ python3 demo.py
 ===== Evaluation
 
 ===== AUC (area under curve): 0.7419284432277942
+===== R@100P (maximum recall at 100% precision): 0.36
+===== recall@K (R@K) -- R@1: 0.85 , R@5: 0.925 , R@10: 0.945
 ```
 
 | Precision-recall curve | Matchings M | Examples for a true positive and a false positive |
@@ -41,18 +43,20 @@ python3 demo.py
 
 
 ## Requirements
-The code was tested with the following library versions:
+The code was tested with the following library versions. Note that Tensorflow or PyTorch is only required if the corresponding image descriptor is used.
 ```
 pipreqs VPR_Tutorial/ --print
 ```
 - matplotlib==3.1.2
 - numpy==1.17.4
-- Pillow==9.4.0
+- Pillow==9.5.0
 - scikit_image==0.19.3
 - scipy==1.3.3
 - skimage==0.0
-- tensorflow==2.10.0
-- tensorflow_hub==0.12.0
+- tensorflow==2.12.0
+- tensorflow_hub==0.13.0
+- torch==1.13.1+cpu
+- torchvision==0.14.1+cpu
 
 
 ## List of existing open-source implementations for VPR (work in progress)
