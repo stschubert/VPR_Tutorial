@@ -58,6 +58,11 @@ pipreqs VPR_Tutorial/ --print
 - torch==1.13.1+cpu
 - torchvision==0.14.1+cpu
 
+You can create a conda environment containing these libraries as follows:
+```bash
+mamba create -n vprtutorial python numpy pytorch torchvision natsort tqdm opencv pillow scikit-learn faiss matplotlib-base tensorflow tensorflow-hub tqdm scikit-image  -c conda-forge -c tobiasrobotics
+```
+
 
 ## List of existing open-source implementations for VPR (work in progress)
 [//]: # (use <td colspan=3> or rowspan to combine cells)
