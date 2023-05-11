@@ -18,9 +18,20 @@
 from matplotlib import pyplot as plt
 import numpy as np
 from skimage.transform import resize
+from typing import Tuple, List, Optional
 
 
-def add_frame(img_in, color):
+def add_frame(img_in: np.ndarray, color: Tuple[int, int, int]) -> np.ndarray:
+    """
+    Adds a colored frame around an input image.
+
+    Args:
+        img_in (np.ndarray): A three-dimensional array representing the input image (height, width, channels).
+        color (Tuple[int, int, int]): A tuple of three integers representing the RGB color of the frame.
+
+    Returns:
+        np.ndarray: A three-dimensional array representing the image with the added frame.
+    """
     img = img_in.copy()
 
     w = int(np.round(0.01*img.shape[1]))
@@ -36,8 +47,32 @@ def add_frame(img_in, color):
     return img
 
 
-def show(db_imgs, q_imgs, TP, FP, M=None):
+def show(
+    db_imgs: List[np.ndarray], 
+    q_imgs: List[np.ndarray], 
+    TP: np.ndarray, 
+    FP: np.ndarray, 
+    M: Optional[np.ndarray] = None,
+) -> None:
+    """
+    Displays a visual comparison of true positive and false positive image pairs
+    from a database and query set. Optionally, a similarity matrix can be included.
+
+    Args:
+        db_imgs (List[np.ndarray]): A list of 3D arrays representing the database images (height, width, channels).
+        q_imgs (List[np.ndarray]): A list of 3D arrays representing the query images (height, width, channels).
+        TP (np.ndarray): A two-dimensional array containing the indices of true positive pairs.
+        FP (np.ndarray): A two-dimensional array containing the indices of false positive pairs.
+        M (Optional[np.ndarray], optional): A two-dimensional array representing the similarity matrix. Defaults to None.
+
+    Returns:
+        None: This function displays the comparison result using matplotlib.pyplot but does not return any value.
+    """
     # true positive TP
+    if(len(TP) == 0):
+        print('No true positives found.')
+        return
+
     idx_tp = np.random.permutation(len(TP))[:1]
 
     db_tp = db_imgs[int(TP[idx_tp, 0])]

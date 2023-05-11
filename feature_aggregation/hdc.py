@@ -17,13 +17,29 @@
 #
 import numpy as np
 from scipy.linalg import orth
+from typing import Union, Dict, List, Tuple
 
 
-################################################################################
-class hdc:
+class HDC(object):
+    """
+    A class for implementing Hyperdimensional Computing (HDC).
+    """
 
-    ############################################################################
-    def __init__(self, Ds, nDims=4096, nFeat=200, nX=5, nY=7):
+    def __init__(self, Ds: List[Dict[str, np.ndarray]], nDims: int = 4096, nFeat: int = 200, nX: int = 5, nY: int = 7):
+        """
+        Initializes the HDC object with the given parameters.
+
+        Args:
+            Ds (List[Dict[str, np.ndarray]]): A list of dictionaries containing
+                descriptors.
+            nDims (int, optional): The number of dimensions for the HDC vectors.
+                Defaults to 4096.
+            nFeat (int, optional): The number of features. Defaults to 200.
+            nX (int, optional): The number of HDC vectors for the X-axis. Defaults
+                to 5.
+            nY (int, optional): The number of HDC vectors for the Y-axis. Defaults
+                to 7.
+        """
         indim = Ds[0]['descriptors'].shape[1]
         self.nDims = nDims
         self.nFeat = nFeat
@@ -47,8 +63,15 @@ class hdc:
                   ).astype('float32')
         self.posY = np.linspace(0., 1., nY)
 
-    ############################################################################
-    def compute_holistic(self):
+
+    def compute_holistic(self) -> np.ndarray:
+        """
+        Computes the holistic HDC descriptors for each entry in self.Ds.
+
+        Returns:
+            np.ndarray: A two-dimensional array with the shape (len(self.Ds), self.nDims),
+                containing the holistic HDC descriptors for each entry in self.Ds.
+        """
         Y = np.zeros((len(self.Ds), self.nDims), 'float32')
 
         for i in range(len(self.Ds)):
@@ -64,11 +87,25 @@ class hdc:
 
         return Y
 
-    ############################################################################
-    def __bundleLocalDescriptorsIndividually(self, D):
+
+    def __bundleLocalDescriptorsIndividually(self, D: Dict[str, Union[np.ndarray, int]]) -> np.ndarray:
+        """
+        Binds each local descriptor to its pose and bundles them to compute the holistic
+        HDC descriptor for a given input dictionary D.
+
+        Args:
+            D (Dict[str, Union[np.ndarray, int]]): A dictionary containing the following keys:
+                - 'descriptors': A two-dimensional array containing the local descriptors.
+                - 'keypoints': A two-dimensional array containing the keypoints.
+                - 'imheight': An integer representing the image height.
+                - 'imwidth': An integer representing the image width.
+
+        Returns:
+            np.ndarray: A one-dimensional array of length self.nDims, containing the
+                holistic HDC descriptor for the input dictionary D.
+        """        
         desc = D['descriptors']
         keypoints = D['keypoints']
-        nFeat = min(self.nFeat, desc.shape[0])
         h = D['imheight']
         w = D['imwidth']
         nDims = self.nDims
@@ -81,8 +118,21 @@ class hdc:
         H = np.sum(desc * PV, 0)
         return H
 
-    ############################################################################
-    def __encodePosesHDCconcatMultiAttractor(self, P, h, w, nDims):
+
+    def __encodePosesHDCconcatMultiAttractor(self, P: np.ndarray, h: int, w: int, nDims: int) -> np.ndarray:
+        """
+        Encodes the poses of keypoints using the HDC multi-attractor approach.
+
+        Args:
+            P (np.ndarray): A two-dimensional array containing the keypoints.
+            h (int): The image height.
+            w (int): The image width.
+            nDims (int): The number of dimensions for the HDC vectors.
+
+        Returns:
+            np.ndarray: A two-dimensional array with the shape (P.shape[0], nDims),
+                containing the encoded HDC poses for the keypoints.
+        """        
         # relative poses for keypoints
         xr = P[:, 1] / w
         yr = P[:, 0] / h
@@ -106,8 +156,23 @@ class hdc:
 
         return PV
 
-    ############################################################################
-    def __findAttractorsAndSplitIdx(self, p, pos, nDims):
+
+    def __findAttractorsAndSplitIdx(self, p: float, pos: np.ndarray, nDims: int) -> Tuple[int, int, int]:
+        """
+        Finds the two closest attractors to the given position and computes the
+        split index for combining the HDC vectors.
+
+        Args:
+            p (float): The position of the point in question.
+            pos (np.ndarray): A one-dimensional array containing the attractor positions.
+            nDims (int): The number of dimensions for the HDC vectors.
+
+        Returns:
+            Tuple[int, int, int]: A tuple containing:
+                - The index of the first closest attractor.
+                - The index of the second closest attractor.
+                - The split index for combining the HDC vectors.
+        """
         # find closest vectors
         idx = np.argpartition(abs(pos-p), 2)[:2]
         idx.sort()
@@ -124,9 +189,18 @@ class hdc:
         # return indices
         return idx1, idx2, splitIdx
 
-    ############################################################################
-    def __STD(self, D):
-        # perform descriptor standardization
+
+    def __STD(self, D: np.ndarray) -> np.ndarray:
+        """
+        Standardizes the input descriptors by subtracting the mean and dividing by the standard deviation.
+
+        Args:
+            D (np.ndarray): A two-dimensional array containing the descriptors to be standardized.
+
+        Returns:
+            np.ndarray: A two-dimensional array containing the standardized descriptors.
+        """
+
         mu = D.mean(0)
         sig = D.std(0)
 

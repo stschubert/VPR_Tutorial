@@ -18,7 +18,7 @@
 import numpy as np
 
 
-def createPR(S_in, GThard, GTsoft, matching='multi', n_thresh=100):
+def createPR(S_in, GThard, GTsoft=None, matching='multi', n_thresh=100):
     """
     Calculates the precision and recall at n_thresh equally spaced threshold values
     for a given similarity matrix S_in and ground truth matrices GThard and GTsoft for
@@ -42,11 +42,13 @@ def createPR(S_in, GThard, GTsoft, matching='multi', n_thresh=100):
 
     # ensure logical datatype in GT and GTsoft
     GT = GThard.astype('bool')
-    GTsoft = GTsoft.astype('bool')
+    if GTsoft is not None:
+        GTsoft = GTsoft.astype('bool')
 
     # copy S and set elements that are only true in GTsoft to min(S) to ignore them during evaluation
     S = S_in.copy()
-    S[GTsoft & ~GT] = S.min()
+    if GTsoft is not None:
+        S[GTsoft & ~GT] = S.min()
 
     # single-best-match or multi-match VPR
     if matching == 'single':
@@ -84,7 +86,7 @@ def createPR(S_in, GThard, GTsoft, matching='multi', n_thresh=100):
     return P, R
 
 
-def recallAt100precision(S_in, GThard, GTsoft, matching='multi', n_thresh=100):
+def recallAt100precision(S_in, GThard, GTsoft=None, matching='multi', n_thresh=100):
     """
     Calculates the maximum recall at 100% precision for a given similarity matrix S_in 
     and ground truth matrices GThard and GTsoft for single-best-match VPR or multi-match 
@@ -102,7 +104,9 @@ def recallAt100precision(S_in, GThard, GTsoft, matching='multi', n_thresh=100):
     the precision-recall curve and should be >1.
     """
 
-    assert (S_in.shape == GThard.shape and S_in.shape == GTsoft.shape),"S_in, GThard and GTsoft must have the same shape"
+    assert (S_in.shape == GThard.shape),"S_in and GThard must have the same shape"
+    if GTsoft is not None:
+        assert (S_in.shape == GTsoft.shape),"S_in and GTsoft must have the same shape"
     assert (S_in.ndim == 2),"S_in, GThard and GTsoft must be two-dimensional"
     assert (matching in ['single', 'multi']),"matching should contain one of the following strings: [single, multi]"
     assert (n_thresh > 1),"n_thresh must be >1"
@@ -121,7 +125,7 @@ def recallAt100precision(S_in, GThard, GTsoft, matching='multi', n_thresh=100):
     return R
 
 
-def recallAtK(S_in, GThard, GTsoft, K):
+def recallAtK(S_in, GThard, GTsoft=None, K=1):
     """
     Calculates the recall@K for a given similarity matrix S_in and ground truth matrices 
     GThard and GTsoft.
@@ -136,7 +140,9 @@ def recallAtK(S_in, GThard, GTsoft, K):
     that must contain an actually matching image pair.
     """
 
-    assert (S_in.shape == GThard.shape and S_in.shape == GTsoft.shape),"S_in, GThard and GTsoft must have the same shape"
+    assert (S_in.shape == GThard.shape),"S_in and GThard must have the same shape"
+    if GTsoft is not None:
+        assert (S_in.shape == GTsoft.shape),"S_in and GTsoft must have the same shape"
     assert (S_in.ndim == 2),"S_in, GThard and GTsoft must be two-dimensional"
     assert (K >= 1),"K must be >=1"
 
