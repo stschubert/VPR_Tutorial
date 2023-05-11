@@ -112,3 +112,4 @@ def show(
     plt.figure()
     plt.imshow(img)
     plt.axis('off')
+    plt.title('Examples for correct and wrong matches from S>=thresh')
