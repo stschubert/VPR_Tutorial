@@ -18,14 +18,15 @@
 
 import numpy as np
 from typing import List
-import torch
-from torchvision import transforms
 
 from .feature_extractor import FeatureExtractor
 
 
 class AlexNetConv3Extractor(FeatureExtractor):
     def __init__(self, nDims: int = 4096):
+        import torch
+        from torchvision import transforms
+
         self.nDims = nDims
         # load alexnet    
         self.model = torch.hub.load('pytorch/vision:v0.10.0', 'alexnet', pretrained=True)
@@ -46,6 +47,8 @@ class AlexNetConv3Extractor(FeatureExtractor):
 
 
     def compute_features(self, imgs: List[np.ndarray]) -> List[np.ndarray]:
+        import torch
+
         imgs_torch = [self.preprocess(img) for img in imgs]
         imgs_torch = torch.stack(imgs_torch, dim=0)
 

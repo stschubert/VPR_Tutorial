@@ -20,9 +20,6 @@ import numpy as np
 from typing import List
 from abc import abstractmethod
 
-import tensorflow as tf
-import tensorflow_hub as hub
-
 from tqdm.auto import tqdm
 
 from .feature_extractor import FeatureExtractor
@@ -42,6 +39,8 @@ class LocalFeatureExtractor(FeatureExtractor):
 
 class DELF(LocalFeatureExtractor):
     def __init__(self):
+        import tensorflow_hub as hub
+
         self.delf = hub.load('https://tfhub.dev/google/delf/1').signatures['default']
 
     def compute_local_features(self, imgs: List[np.ndarray]) -> List[np.ndarray]:
@@ -52,6 +51,8 @@ class DELF(LocalFeatureExtractor):
         return D
 
     def compute_local_delf_descriptor(self, img: np.ndarray):
+        import tensorflow as tf
+
         im_height = img.shape[0]
         im_width = img.shape[1]
         img = tf.image.convert_image_dtype(img, tf.float32)
