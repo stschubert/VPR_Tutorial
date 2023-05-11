@@ -48,10 +48,8 @@ class GardensPointDataset(Dataset):
             self.download(self.destination)
 
         # load images
-        fns_db = glob(self.destination + 'day_right/*.jpg')
-        fns_q = glob(self.destination + 'night_right/*.jpg')
-        fns_db.sort()
-        fns_q.sort()
+        fns_db = sorted(glob(self.destination + 'day_right/*.jpg'))
+        fns_q = sorted(glob(self.destination + 'night_right/*.jpg'))
 
         imgs_db = [np.array(Image.open(fn)) for fn in fns_db]
         imgs_q = [np.array(Image.open(fn)) for fn in fns_q]
