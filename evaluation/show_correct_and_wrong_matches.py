@@ -69,6 +69,10 @@ def show(
         None: This function displays the comparison result using matplotlib.pyplot but does not return any value.
     """
     # true positive TP
+    if(len(TP) == 0):
+        print('No true positives found.')
+        return
+
     idx_tp = np.random.permutation(len(TP))[:1]
 
     db_tp = db_imgs[int(TP[idx_tp, 0])]
