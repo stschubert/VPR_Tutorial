@@ -42,8 +42,18 @@ class AlexNetConv3Extractor(FeatureExtractor):
             transforms.ToTensor(),
             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
         ])
+
         if torch.cuda.is_available():
-            self.model.to('cuda')
+            print('Using GPU')
+            self.device = torch.device("cuda")
+        elif torch.backends.mps.is_available() and torch.backends.mps.is_built():
+            print('Using MPS')
+            self.device = torch.device("mps")
+        else:
+            print('Using CPU')
+            self.device = torch.device("cpu")
+
+        self.model.to(self.device)
 
 
     def compute_features(self, imgs: List[np.ndarray]) -> List[np.ndarray]:
@@ -52,8 +62,7 @@ class AlexNetConv3Extractor(FeatureExtractor):
         imgs_torch = [self.preprocess(img) for img in imgs]
         imgs_torch = torch.stack(imgs_torch, dim=0)
 
-        if torch.cuda.is_available():
-            imgs_torch = imgs_torch.to('cuda')
+        imgs_torch = imgs_torch.to(self.device)
 
         with torch.no_grad():
             output = self.model(imgs_torch)
