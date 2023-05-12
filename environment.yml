@@ -18,4 +18,4 @@ dependencies:
   - tensorflow
   - tensorflow-hub
   - scikit-image
-
+  - ipywidgets
