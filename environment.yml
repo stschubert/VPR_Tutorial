@@ -1,0 +1,21 @@
+name: vprtutorial
+channels:
+  - conda-forge
+  - tobiasrobotics
+dependencies:
+  - python
+  - numpy
+  - pytorch
+  - torchvision
+  - patchnetvlad
+  - natsort
+  - tqdm
+  - opencv
+  - pillow
+  - scikit-learn
+  - faiss
+  - matplotlib-base
+  - tensorflow
+  - tensorflow-hub
+  - scikit-image
+

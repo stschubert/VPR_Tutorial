@@ -17,9 +17,12 @@
 #
 
 import argparse
+import configparser
+import os
 
 from feature_extraction.feature_extractor_local import DELF
 from feature_extraction.feature_extractor_holistic import AlexNetConv3Extractor
+from feature_extraction.feature_extractor_patchnetvlad import PatchNetVLADFeatureExtractor
 from evaluation.metrics import createPR, recallAt100precision, recallAtK
 from evaluation import show_correct_and_wrong_matches
 from matching import matching
@@ -31,7 +34,7 @@ from matplotlib import pyplot as plt
 
 def main():
     parser = argparse.ArgumentParser(description='Visual Place Recognition: A Tutorial. Code repository supplementing our paper.')
-    parser.add_argument('--descriptor', type=str, default='HDC-DELF', choices=['HDC-DELF', 'AlexNet'], help='Select descriptor')
+    parser.add_argument('--descriptor', type=str, default='HDC-DELF', choices=['HDC-DELF', 'AlexNet', 'NetVLAD', 'PatchNetVLAD'], help='Select descriptor')
     parser.add_argument('--dataset', type=str, default='GardensPoint', choices=['GardensPoint'], help='Select dataset')
     args = parser.parse_args()
 
@@ -50,19 +53,44 @@ def main():
         feature_extractor = DELF()
     elif args.descriptor == 'AlexNet':
         feature_extractor = AlexNetConv3Extractor()
+    elif args.descriptor == 'NetVLAD' or args.descriptor == 'PatchNetVLAD':
+        from patchnetvlad.tools import PATCHNETVLAD_ROOT_DIR
+        if args.descriptor == 'NetVLAD':
+            configfile = os.path.join(PATCHNETVLAD_ROOT_DIR, 'configs/netvlad_extract.ini')
+        else:
+            configfile = os.path.join(PATCHNETVLAD_ROOT_DIR, 'configs/speed.ini')
+        assert os.path.isfile(configfile)
+        config = configparser.ConfigParser()
+        config.read(configfile)
+        feature_extractor = PatchNetVLADFeatureExtractor(config)
     else:
         raise ValueError('Unknown descriptor: ' + args.descriptor)
 
-    print('===== Compute reference set descriptors')
-    db_D_holistic = feature_extractor.compute_features(imgs_db)
-    print('===== Compute query set descriptors')
-    q_D_holistic = feature_extractor.compute_features(imgs_q)
+    if args.descriptor != 'PatchNetVLAD':
+        print('===== Compute reference set descriptors')
+        db_D_holistic = feature_extractor.compute_features(imgs_db)
+        print('===== Compute query set descriptors')
+        q_D_holistic = feature_extractor.compute_features(imgs_q)
 
-    # normalize descriptors and compute S-matrix
-    print('===== Compute cosine similarities S')
-    db_D_holistic = db_D_holistic / np.linalg.norm(db_D_holistic , axis=1, keepdims=True)
-    q_D_holistic = q_D_holistic / np.linalg.norm(q_D_holistic , axis=1, keepdims=True)
-    S = np.matmul(db_D_holistic , q_D_holistic.transpose())
+        # normalize descriptors and compute S-matrix
+        print('===== Compute cosine similarities S')
+        db_D_holistic = db_D_holistic / np.linalg.norm(db_D_holistic , axis=1, keepdims=True)
+        q_D_holistic = q_D_holistic / np.linalg.norm(q_D_holistic , axis=1, keepdims=True)
+        S = np.matmul(db_D_holistic , q_D_holistic.transpose())
+    else:
+        print('=== WARNING: The PatchNetVLAD code in this repository is not optimised and will be slow and memory consuming.')
+        print('===== Compute reference set descriptors')
+        db_D_holistic, db_D_patches = feature_extractor.compute_features(imgs_db)
+        print('===== Compute query set descriptors')
+        q_D_holistic, q_D_patches = feature_extractor.compute_features(imgs_q)
+        # S_hol = np.matmul(db_D_holistic , q_D_holistic.transpose())
+        S = feature_extractor.local_matcher_from_numpy_single_scale(q_D_patches, db_D_patches)
+
+    # show similarity matrix
+    fig = plt.figure()
+    plt.imshow(S)
+    plt.axis('off')
+    plt.title('Similarity matrix S')
 
     # matching decision making
     print('===== Match images')
@@ -80,7 +108,6 @@ def main():
     # show correct and wrong image matches
     show_correct_and_wrong_matches.show(
         imgs_db, imgs_q, TP, FP)  # show random matches
-    plt.title('Examples for correct and wrong matches from S>=thresh')
 
     # show M's
     fig = plt.figure()
@@ -110,13 +137,14 @@ def main():
 
     # maximum recall at 100% precision
     maxR = recallAt100precision(S, GThard, GTsoft, matching='multi', n_thresh=100)
-    print(f'\n===== R@100P (maximum recall at 100% precision): {maxR:.3f}')
+    print(f'\n===== R@100P (maximum recall at 100% precision): {maxR:.2f}')
 
     # recall at K
-    Rat1 = recallAtK(S, GThard, GTsoft, K=1)
-    Rat5 = recallAtK(S, GThard, GTsoft, K=5)
-    Rat10 = recallAtK(S, GThard, GTsoft, K=10)
-    print(f'\n===== recall@K (R@K) -- R@1: {Rat1:.3f}, R@5: {Rat5:.3f}, R@10: {Rat10:.3f}')
+    RatK = {}
+    for K in [1, 5, 10]:
+        RatK[K] = recallAtK(S, GThard, GTsoft, K=K)
+
+    print(f'\n===== recall@K (R@K) -- R@1: {RatK[1]:.3f}, R@5: {RatK[5]:.3f}, R@10: {RatK[10]:.3f}')
 
     plt.show()
 
