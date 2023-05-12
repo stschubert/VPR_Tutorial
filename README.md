@@ -15,7 +15,7 @@ If you use our work for your academic research, please refer to the following pa
 
 ## How to run the code
 ### Online
-We provide a Jupyter Notebook [demo.ipynb](./demo.ipynb) that runs the code, shows intermediate results, and provides some additional explanations. It can be accessed online via [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/stschubert/VPR_Tutorial/main?labpath=demo.ipynb).
+We provide a Jupyter Notebook [demo.ipynb](./demo.ipynb) that runs the code, shows intermediate results, and provides some additional explanations. It can be executed online via [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/stschubert/VPR_Tutorial/main?labpath=demo.ipynb).
 
 ### Local
 ```
