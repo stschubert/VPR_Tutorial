@@ -32,8 +32,8 @@ def best_match_per_query(S: np.ndarray) -> np.ndarray:
         np.ndarray: A two-dimensional boolean matrix with the same shape as S,
             where the best match per query is marked as True.
     """
-    j = np.argmax(S, axis=0)
-    i = np.int64(range(len(j)))
+    i = np.argmax(S, axis=0)
+    j = np.int64(range(len(i)))
 
     M = np.zeros_like(S, dtype='bool')
     M[i, j] = True
