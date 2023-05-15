@@ -1,0 +1,26 @@
+{
+    "name": "VPR Tutorial",
+    "dockerFile": "Dockerfile",
+    "extensions": [
+        "ms-python.python",
+        "magicstack.MagicPython",
+        "VisualStudioExptTeam.vscodeintellicode"
+    ],
+    "settings": { 
+        "terminal.integrated.shell.linux": "/bin/bash",
+        "python.pythonPath": "/opt/conda/envs/vprtutorial/bin/python",
+        "python.linting.enabled": true,
+        "python.linting.pylintEnabled": true,
+        "python.formatting.autopep8Path": "/opt/conda/envs/vprtutorial/bin/autopep8",
+        "python.formatting.blackPath": "/opt/conda/envs/vprtutorial/bin/black",
+        "python.formatting.yapfPath": "/opt/conda/envs/vprtutorial/bin/yapf",
+        "python.linting.banditPath": "/opt/conda/envs/vprtutorial/bin/bandit",
+        "python.linting.flake8Path": "/opt/conda/envs/vprtutorial/bin/flake8",
+        "python.linting.mypyPath": "/opt/conda/envs/vprtutorial/bin/mypy",
+        "python.linting.pycodestylePath": "/opt/conda/envs/vprtutorial/bin/pycodestyle",
+        "python.linting.pydocstylePath": "/opt/conda/envs/vprtutorial/bin/pydocstyle",
+        "python.linting.pylintPath": "/opt/conda/envs/vprtutorial/bin/pylint"
+    },
+    "postCreateCommand": "echo 'conda activate vprtutorial' >> ~/.bashrc",
+    "forwardPorts": [5000, 8888]
+}
