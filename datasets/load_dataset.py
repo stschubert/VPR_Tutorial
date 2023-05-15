@@ -126,3 +126,49 @@ class StLuciaDataset(Dataset):
 
         # remove zipfile
         os.remove(destination + fn)
+
+
+class SFUDataset(Dataset):
+    def __init__(self, destination: str = 'images/SFU/'):
+        self.destination = destination
+
+    def load(self) -> Tuple[List[np.ndarray], List[np.ndarray], np.ndarray, np.ndarray]:
+        print('===== Load dataset SFU dry--jan')
+
+        # download images if necessary
+        if not os.path.exists(self.destination):
+            self.download(self.destination)
+
+        # load images
+        fns_db = sorted(glob(self.destination + 'dry/*.jpg'))
+        fns_q = sorted(glob(self.destination + 'jan/*.jpg'))
+
+        imgs_db = [np.array(Image.open(fn)) for fn in fns_db]
+        imgs_q = [np.array(Image.open(fn)) for fn in fns_q]
+
+        # create ground truth
+        gt_data = np.load(self.destination + 'GT.npz')
+        GThard = gt_data['GThard'].astype('bool')
+        GTsoft = gt_data['GTsoft'].astype('bool')
+
+        return imgs_db, imgs_q, GThard, GTsoft
+
+    def download(self, destination: str):
+        print('===== SFU dataset does not exist. Download to ' + destination + '...')
+
+        fn = 'SFU.zip'
+        url = 'https://www.tu-chemnitz.de/etit/proaut/datasets/' + fn
+
+        # create folders
+        path = os.path.expanduser(destination)
+        os.makedirs(path, exist_ok=True)
+
+        # download
+        urllib.request.urlretrieve(url, path + fn)
+
+        # unzip
+        with zipfile.ZipFile(path + fn, 'r') as zip_ref:
+            zip_ref.extractall(destination)
+
+        # remove zipfile
+        os.remove(destination + fn)

@@ -26,7 +26,7 @@ from feature_extraction.feature_extractor_patchnetvlad import PatchNetVLADFeatur
 from evaluation.metrics import createPR, recallAt100precision, recallAtK
 from evaluation import show_correct_and_wrong_matches
 from matching import matching
-from datasets.load_dataset import GardensPointDataset, StLuciaDataset
+from datasets.load_dataset import GardensPointDataset, StLuciaDataset, SFUDataset
 import numpy as np
 
 from matplotlib import pyplot as plt
@@ -35,7 +35,7 @@ from matplotlib import pyplot as plt
 def main():
     parser = argparse.ArgumentParser(description='Visual Place Recognition: A Tutorial. Code repository supplementing our paper.')
     parser.add_argument('--descriptor', type=str, default='HDC-DELF', choices=['HDC-DELF', 'AlexNet', 'NetVLAD', 'PatchNetVLAD'], help='Select descriptor')
-    parser.add_argument('--dataset', type=str, default='GardensPoint', choices=['GardensPoint', 'StLucia'], help='Select dataset')
+    parser.add_argument('--dataset', type=str, default='GardensPoint', choices=['GardensPoint', 'StLucia', 'SFU'], help='Select dataset')
     args = parser.parse_args()
 
     # plt.ion()
@@ -46,6 +46,8 @@ def main():
         dataset = GardensPointDataset()
     elif args.dataset == 'StLucia':
         dataset = StLuciaDataset()
+    elif args.dataset == 'SFU':
+        dataset = SFUDataset()
     else:
         raise ValueError('Unknown dataset: ' + args.dataset)
 
