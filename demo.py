@@ -20,7 +20,7 @@ import argparse
 import configparser
 import os
 
-from feature_extraction.feature_extractor_local import DELF
+from feature_extraction.feature_extractor_local import HDCDELF
 from feature_extraction.feature_extractor_holistic import AlexNetConv3Extractor
 from feature_extraction.feature_extractor_patchnetvlad import PatchNetVLADFeatureExtractor
 from evaluation.metrics import createPR, recallAt100precision, recallAtK
@@ -54,7 +54,7 @@ def main():
     imgs_db, imgs_q, GThard, GTsoft = dataset.load()
 
     if args.descriptor == 'HDC-DELF':
-        feature_extractor = DELF()
+        feature_extractor = HDCDELF()
     elif args.descriptor == 'AlexNet':
         feature_extractor = AlexNetConv3Extractor()
     elif args.descriptor == 'NetVLAD' or args.descriptor == 'PatchNetVLAD':

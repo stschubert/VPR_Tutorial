@@ -37,7 +37,7 @@ class LocalFeatureExtractor(FeatureExtractor):
         pass
 
 
-class DELF(LocalFeatureExtractor):
+class HDCDELF(LocalFeatureExtractor):
     def __init__(self):
         import tensorflow_hub as hub
 
