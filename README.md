@@ -14,8 +14,19 @@ If you use our work for your academic research, please refer to the following pa
 
 
 ## How to run the code
-### Online
-We provide a Jupyter Notebook [demo.ipynb](./demo.ipynb) that runs the code, shows intermediate results, and provides some additional explanations. It can be executed online via [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/stschubert/VPR_Tutorial/main?labpath=demo.ipynb).
+### Online (Using GitHub Codespaces)
+
+This repository is configured for use with [GitHub Codespaces](https://github.com/features/codespaces), a service that provides you with a fully-configured Visual Studio Code environment in the cloud, directly from your GitHub repository.
+
+To open this repository in a Codespace:
+
+1. Click on the green "Code" button near the top-right corner of the repository page.
+2. In the dropdown, select "Open with Codespaces", and then click on "+ New codespace".
+3. Your Codespace will be created and will start automatically. This process may take a few minutes.
+
+Once your Codespace is ready, it will open in a new browser tab. This is a full-featured version of VS Code running in your browser, and it has access to all the files in your repository and all the tools installed in your Docker container.
+
+You can run commands in the terminal, edit files, debug code, commit changes, and do anything else you would normally do in VS Code. When you're done, you can close the browser tab, and your Codespace will automatically stop after a period of inactivity.
 
 ### Local
 ```
@@ -48,7 +59,7 @@ The code was tested with the library versions listed in [requirements.txt](./req
 pip install -r requirements.txt
 ```
 
-You can create a conda environment containing these libraries as follows (or use the provided [environment.yml](./environment.yml)):
+You can create a conda environment containing these libraries as follows (or use the provided [environment.yml](./.devcontainer/environment.yml)):
 ```bash
 mamba create -n vprtutorial python numpy pytorch torchvision natsort tqdm opencv pillow scikit-learn faiss matplotlib-base tensorflow tensorflow-hub tqdm scikit-image patchnetvlad -c conda-forge -c tobiasrobotics
 ```
