@@ -5,6 +5,6 @@ FROM condaforge/mambaforge
 COPY environment.yml ./
 
 # Create the conda environment and install additional packages
-RUN mamba env update -f environment.yml && \
+RUN mamba env update -n base -f environment.yml && \
     mamba install autopep8 black yapf bandit flake8 mypy pycodestyle pydocstyle jupyter && \
     mamba clean --all --yes
