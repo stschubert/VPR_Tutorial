@@ -5,8 +5,7 @@
         "ms-python.python",
         "magicstack.MagicPython",
         "VisualStudioExptTeam.vscodeintellicode",
-        "ms-toolsai.jupyter",
-        "ms-python.pylint"
+        "ms-toolsai.jupyter"
     ],
     "settings": { 
         "terminal.integrated.shell.linux": "/bin/bash",
