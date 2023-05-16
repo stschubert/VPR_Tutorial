@@ -4,7 +4,8 @@
     "extensions": [
         "ms-python.python",
         "magicstack.MagicPython",
-        "VisualStudioExptTeam.vscodeintellicode"
+        "VisualStudioExptTeam.vscodeintellicode",
+        "ms-toolsai.jupyter"
     ],
     "settings": { 
         "terminal.integrated.shell.linux": "/bin/bash",
