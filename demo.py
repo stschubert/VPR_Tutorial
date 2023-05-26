@@ -19,10 +19,6 @@
 import argparse
 import configparser
 import os
-
-from feature_extraction.feature_extractor_local import HDCDELF
-from feature_extraction.feature_extractor_holistic import AlexNetConv3Extractor
-from feature_extraction.feature_extractor_patchnetvlad import PatchNetVLADFeatureExtractor
 from evaluation.metrics import createPR, recallAt100precision, recallAtK
 from evaluation import show_correct_and_wrong_matches
 from matching import matching
@@ -54,10 +50,13 @@ def main():
     imgs_db, imgs_q, GThard, GTsoft = dataset.load()
 
     if args.descriptor == 'HDC-DELF':
+        from feature_extraction.feature_extractor_local import HDCDELF
         feature_extractor = HDCDELF()
     elif args.descriptor == 'AlexNet':
+        from feature_extraction.feature_extractor_holistic import AlexNetConv3Extractor
         feature_extractor = AlexNetConv3Extractor()
     elif args.descriptor == 'NetVLAD' or args.descriptor == 'PatchNetVLAD':
+        from feature_extraction.feature_extractor_patchnetvlad import PatchNetVLADFeatureExtractor
         from patchnetvlad.tools import PATCHNETVLAD_ROOT_DIR
         if args.descriptor == 'NetVLAD':
             configfile = os.path.join(PATCHNETVLAD_ROOT_DIR, 'configs/netvlad_extract.ini')
