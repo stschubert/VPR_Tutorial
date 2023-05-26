@@ -23,25 +23,26 @@ from abc import abstractmethod
 from tqdm.auto import tqdm
 
 from .feature_extractor import FeatureExtractor
-from feature_aggregation.hdc import HDC
 
 
 class LocalFeatureExtractor(FeatureExtractor):
-    def compute_features(self, imgs: List[np.ndarray]) -> np.ndarray:
-        D_local = self.compute_local_features(imgs)
-        D_holistic = HDC(D_local).compute_holistic()
-        return D_holistic
 
     @abstractmethod
     def compute_local_features(self, imgs: List[np.ndarray]) -> List[np.ndarray]:
         pass
 
 
-class HDCDELF(LocalFeatureExtractor):
+class DELF(LocalFeatureExtractor):
     def __init__(self):
         import tensorflow_hub as hub
 
         self.delf = hub.load('https://tfhub.dev/google/delf/1').signatures['default']
+
+    def compute_features(self, imgs: List[np.ndarray]) -> np.ndarray:
+
+        D_local = self.compute_local_features(imgs)
+
+        return D_local
 
     def compute_local_features(self, imgs: List[np.ndarray]) -> List[np.ndarray]:
         D = []
