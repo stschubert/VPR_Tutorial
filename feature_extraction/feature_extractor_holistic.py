@@ -77,3 +77,18 @@ class AlexNetConv3Extractor(FeatureExtractor):
         Ds = Ds @ Proj
 
         return Ds
+
+
+class HDCDELF(FeatureExtractor):
+    def __init__(self):
+        from .feature_extractor_local import DELF
+
+        self.DELF = DELF() # local DELF descriptor
+
+    def compute_features(self, imgs: List[np.ndarray]) -> np.ndarray:
+        from feature_aggregation.hdc import HDC
+
+        D_local = self.DELF.compute_features(imgs)
+        D_holistic = HDC(D_local).compute_holistic()
+
+        return D_holistic
