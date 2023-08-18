@@ -4,10 +4,10 @@ The code performs VPR on the GardensPoint day_right--night_right dataset. Output
 
 If you use our work for your academic research, please refer to the following paper:
 ```bibtex
-@article{SchubertVisual,
+@article{SchubertRAM2023ICRA2024,
     title={Visual Place Recognition: A Tutorial},
     author={Stefan Schubert and Peer Neubert and Sourav Garg and Michael Milford and Tobias Fischer},
-    journal={arXiv 2303.03281},
+    journal={IEEE Robotics and Automation Magazine},
     year={2023},
 }
 ```
