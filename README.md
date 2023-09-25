@@ -5,10 +5,11 @@ The code performs VPR on the GardensPoint day_right--night_right dataset. Output
 If you use our work for your academic research, please refer to the following paper:
 ```bibtex
 @article{SchubertRAM2023ICRA2024,
-    title={Visual Place Recognition: A Tutorial},
-    author={Stefan Schubert and Peer Neubert and Sourav Garg and Michael Milford and Tobias Fischer},
-    journal={IEEE Robotics and Automation Magazine},
-    year={2023},
+  title={Visual Place Recognition: A Tutorial},
+  author={Schubert, Stefan and Neubert, Peer and Garg, Sourav and Milford, Michael and Fischer, Tobias},
+  journal={IEEE Robotics & Automation Magazine},  
+  year={2023},
+  doi={10.1109/MRA.2023.3310859}
 }
 ```
 
@@ -107,6 +108,16 @@ mamba create -n vprtutorial python numpy pytorch torchvision natsort tqdm opencv
             <td><a href="">NetVLAD</a></td>
             <td><a href="https://www.di.ens.fr/willow/research/netvlad/">code</a></td>
             <td><a href="https://doi.org/10.1109/CVPR.2016.572">paper</a></td>
+        </tr>
+        <tr>
+            <td><a href="">CosPlace</a></td>
+            <td><a href="https://github.com/gmberton/CosPlace">code</a></td>
+            <td><a href="https://arxiv.org/abs/2204.02287">paper</a></td>
+        </tr>
+        <tr>
+            <td><a href="">EigenPlaces</a></td>
+            <td><a href="https://github.com/gmberton/EigenPlaces">code</a></td>
+            <td><a href="https://arxiv.org/abs/2308.10832">paper</a></td>
         </tr>
     </tbody>
 </table>
