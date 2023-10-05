@@ -109,6 +109,16 @@ mamba create -n vprtutorial python numpy pytorch torchvision natsort tqdm opencv
             <td><a href="https://www.di.ens.fr/willow/research/netvlad/">code</a></td>
             <td><a href="https://doi.org/10.1109/CVPR.2016.572">paper</a></td>
         </tr>
+        <tr>
+            <td><a href="">CosPlace</a></td>
+            <td><a href="https://github.com/gmberton/CosPlace">code</a></td>
+            <td><a href="https://arxiv.org/abs/2204.02287">paper</a></td>
+        </tr>
+        <tr>
+            <td><a href="">EigenPlaces</a></td>
+            <td><a href="https://github.com/gmberton/EigenPlaces">code</a></td>
+            <td><a href="https://arxiv.org/abs/2308.10832">paper</a></td>
+        </tr>
     </tbody>
 </table>
 

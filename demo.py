@@ -31,7 +31,7 @@ from matplotlib import pyplot as plt
 
 def main():
     parser = argparse.ArgumentParser(description='Visual Place Recognition: A Tutorial. Code repository supplementing our paper.')
-    parser.add_argument('--descriptor', type=str, default='HDC-DELF', choices=['HDC-DELF', 'AlexNet', 'NetVLAD', 'PatchNetVLAD'], help='Select descriptor')
+    parser.add_argument('--descriptor', type=str, default='HDC-DELF', choices=['HDC-DELF', 'AlexNet', 'NetVLAD', 'PatchNetVLAD', 'CosPlace', 'EigenPlaces'], help='Select descriptor')
     parser.add_argument('--dataset', type=str, default='GardensPoint', choices=['GardensPoint', 'StLucia', 'SFU'], help='Select dataset')
     args = parser.parse_args()
 
@@ -67,6 +67,12 @@ def main():
         config = configparser.ConfigParser()
         config.read(configfile)
         feature_extractor = PatchNetVLADFeatureExtractor(config)
+    elif args.descriptor == 'CosPlace':
+        from feature_extraction.feature_extractor_cosplace import CosPlaceFeatureExtractor
+        feature_extractor = CosPlaceFeatureExtractor()
+    elif args.descriptor == 'EigenPlaces':
+        from feature_extraction.feature_extractor_eigenplaces import EigenPlacesFeatureExtractor
+        feature_extractor = EigenPlacesFeatureExtractor()
     else:
         raise ValueError('Unknown descriptor: ' + args.descriptor)
 
