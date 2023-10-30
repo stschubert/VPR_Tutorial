@@ -89,7 +89,7 @@ def show(
         idx_fp = np.random.permutation(len(FP))[:1]
 
         db_fp = db_imgs[int(FP[idx_fp, 0])]
-        q_fp = q_imgs[int(TP[idx_fp, 1])]
+        q_fp = q_imgs[int(FP[idx_fp, 1])]
 
         if db_fp.shape != q_fp.shape:
             q_fp = resize(q_fp.copy(), db_fp.shape, anti_aliasing=True)
