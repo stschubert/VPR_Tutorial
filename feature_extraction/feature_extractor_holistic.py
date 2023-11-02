@@ -92,3 +92,63 @@ class HDCDELF(FeatureExtractor):
         D_holistic = HDC(D_local).compute_holistic()
 
         return D_holistic
+
+
+# sum of absolute differences (SAD) [Milford and Wyeth (2012). "SeqSLAM: Visual
+# Route-Based Navigation for Sunny Summer Days and Stormy Winter Nights". ICRA.]
+class SAD(FeatureExtractor):
+    def __init__(self, nPixels: int = 2048, patchLength: int = 8):
+        self.nPixels = nPixels # number pixels in downsampled image
+        self.patchLength = patchLength # side length of patches for patch normalization
+
+        self.imshapeDownsampled = None
+
+    def compute_features(self, imgs: List[np.ndarray]) -> np.ndarray:
+
+        # determine new image shape to obtain roughly self.nPixels pixels and
+        # image dimensions that are a multiple of self.patchLength
+        if self.imshapeDownsampled is None:
+            [h,w,_] = np.array(imgs[0].shape)
+
+            k = np.sqrt(self.nPixels / (h * w))
+            h = np.ceil(k * h)
+            h -= np.mod(h, self.patchLength)
+            w = np.ceil(k * w)
+            w -= np.mod(w, self.patchLength)
+
+            if np.abs(self.nPixels - h*w) > np.abs(self.nPixels - (h+self.patchLength)*(w+self.patchLength)):
+                h += self.patchLength
+                w += self.patchLength
+
+            self.imshapeDownsampled = [int(h), int(w)]
+
+        # grayscale conversion and downsampling
+        from torchvision import transforms
+        preprocess = transforms.Compose([
+            transforms.ToPILImage(),
+            transforms.Grayscale(),
+            transforms.Resize(self.imshapeDownsampled),
+        ])
+        imgs = [np.array(preprocess(img)) for img in imgs]
+
+        # patch normalization
+        Ds = [self.__patch_normalize(img).flatten() for img in imgs]
+        Ds = np.array(Ds).astype('float32')
+
+        return Ds
+
+    def __patch_normalize(self, img: np.ndarray) -> np.ndarray:
+        np.seterr(divide='ignore', invalid='ignore') # ignore potential division by 0
+
+        img = img.astype('float32')
+        [h,w] = img.shape
+        for i_h in range(h // self.patchLength):
+            for i_w in range(w // self.patchLength):
+                patch = img[i_h*self.patchLength:(i_h+1)*self.patchLength, i_w*self.patchLength:(i_w+1)*self.patchLength]
+                patch_normalized = 255 * ((patch - patch.min()) / (patch.max() - patch.min()))
+                patch = patch_normalized.round()
+                img[i_h*self.patchLength:(i_h+1)*self.patchLength, i_w*self.patchLength:(i_w+1)*self.patchLength] = patch
+
+        np.seterr(divide='warn', invalid='warn')
+
+        return img

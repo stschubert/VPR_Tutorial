@@ -31,11 +31,11 @@ from matplotlib import pyplot as plt
 
 def main():
     parser = argparse.ArgumentParser(description='Visual Place Recognition: A Tutorial. Code repository supplementing our paper.')
-    parser.add_argument('--descriptor', type=str, default='HDC-DELF', choices=['HDC-DELF', 'AlexNet', 'NetVLAD', 'PatchNetVLAD', 'CosPlace', 'EigenPlaces'], help='Select descriptor')
-    parser.add_argument('--dataset', type=str, default='GardensPoint', choices=['GardensPoint', 'StLucia', 'SFU'], help='Select dataset')
+    parser.add_argument('--descriptor', type=str, default='HDC-DELF', choices=['HDC-DELF', 'AlexNet', 'NetVLAD', 'PatchNetVLAD', 'CosPlace', 'EigenPlaces', 'SAD'], help='Select descriptor (default: HDC-DELF)')
+    parser.add_argument('--dataset', type=str, default='GardensPoint', choices=['GardensPoint', 'StLucia', 'SFU'], help='Select dataset (default: GardensPoint)')
     args = parser.parse_args()
 
-    # plt.ion()
+    print('========== Start VPR with {} descriptor on dataset {}'.format(args.descriptor, args.dataset))
 
     # load dataset
     print('===== Load dataset')
@@ -56,6 +56,9 @@ def main():
     elif args.descriptor == 'AlexNet':
         from feature_extraction.feature_extractor_holistic import AlexNetConv3Extractor
         feature_extractor = AlexNetConv3Extractor()
+    elif args.descriptor == 'SAD':
+        from feature_extraction.feature_extractor_holistic import SAD
+        feature_extractor = SAD()
     elif args.descriptor == 'NetVLAD' or args.descriptor == 'PatchNetVLAD':
         from feature_extraction.feature_extractor_patchnetvlad import PatchNetVLADFeatureExtractor
         from patchnetvlad.tools import PATCHNETVLAD_ROOT_DIR
@@ -76,7 +79,7 @@ def main():
     else:
         raise ValueError('Unknown descriptor: ' + args.descriptor)
 
-    if args.descriptor != 'PatchNetVLAD':
+    if args.descriptor != 'PatchNetVLAD' and args.descriptor != 'SAD':
         print('===== Compute reference set descriptors')
         db_D_holistic = feature_extractor.compute_features(imgs_db)
         print('===== Compute query set descriptors')
@@ -87,6 +90,21 @@ def main():
         db_D_holistic = db_D_holistic / np.linalg.norm(db_D_holistic , axis=1, keepdims=True)
         q_D_holistic = q_D_holistic / np.linalg.norm(q_D_holistic , axis=1, keepdims=True)
         S = np.matmul(db_D_holistic , q_D_holistic.transpose())
+    elif args.descriptor == 'SAD':
+        print('===== Compute reference set descriptors')
+        db_D_holistic = feature_extractor.compute_features(imgs_db)
+        print('===== Compute query set descriptors')
+        q_D_holistic = feature_extractor.compute_features(imgs_q)
+
+        # compute similarity matrix S with sum of absolute differences (SAD)
+        print('===== Compute similarities S from sum of absolute differences (SAD)')
+        S = np.empty([len(imgs_db), len(imgs_q)], 'float32')
+        for i in range(S.shape[0]):
+            for j in range(S.shape[1]):
+                diff = db_D_holistic[i]-q_D_holistic[j]
+                dim = len(db_D_holistic[0]) - np.sum(np.isnan(diff))
+                diff[np.isnan(diff)] = 0
+                S[i,j] = -np.sum(np.abs(diff)) / dim
     else:
         print('=== WARNING: The PatchNetVLAD code in this repository is not optimised and will be slow and memory consuming.')
         print('===== Compute reference set descriptors')
