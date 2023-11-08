@@ -7,7 +7,7 @@ If you use our work for your academic research, please refer to the following pa
 @article{SchubertRAM2023ICRA2024,
   title={Visual Place Recognition: A Tutorial},
   author={Schubert, Stefan and Neubert, Peer and Garg, Sourav and Milford, Michael and Fischer, Tobias},
-  journal={IEEE Robotics & Automation Magazine},  
+  journal={IEEE Robotics \& Automation Magazine},  
   year={2023},
   doi={10.1109/MRA.2023.3310859}
 }
