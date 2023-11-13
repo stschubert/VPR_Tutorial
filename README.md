@@ -62,7 +62,7 @@ pip install -r requirements.txt
 
 You can create a conda environment containing these libraries as follows (or use the provided [environment.yml](./.devcontainer/environment.yml)):
 ```bash
-mamba create -n vprtutorial python numpy pytorch torchvision natsort tqdm opencv pillow scikit-learn faiss matplotlib-base tensorflow tensorflow-hub tqdm scikit-image patchnetvlad -c conda-forge -c tobiasrobotics
+mamba create -n vprtutorial python numpy pytorch torchvision natsort tqdm opencv pillow scikit-learn faiss matplotlib-base tensorflow tensorflow-hub tqdm scikit-image patchnetvlad -c conda-forge
 ```
 
 
