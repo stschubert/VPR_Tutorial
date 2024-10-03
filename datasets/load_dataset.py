@@ -35,6 +35,30 @@ class Dataset(ABC):
     def download(self, destination: str):
         pass
 
+class HTT_example(Dataset):
+    def __init__(self, destination: str = 'images/HTT_example/5-ANG2312_00089-ANG2401_00089'):
+        self.destination = destination
+    
+    def load(self) -> Tuple[List[np.ndarray], List[np.ndarray], np.ndarray, np.ndarray]:
+        print('===== Load dataset Hubble Example ANG2312_00089--ANG2401_00089')
+
+        # load images
+        fns_db = sorted(glob(self.destination + '/ANG2312_00089/*.png'))
+        fns_q = sorted(glob(self.destination + '/ANG2401_00089/*.png'))
+
+        imgs_db = [np.array(Image.open(fn)) for fn in fns_db]
+        imgs_q = [np.array(Image.open(fn)) for fn in fns_q]
+
+        
+        # Create Ground Truth and save to file in dataset
+        GThard = np.load(self.destination + '/M_gt_hard.npy')
+        #What to do about GTsoft? Make it a copy for now? Add convolution?
+        GTsoft = np.load(self.destination + '/M_gt_soft.npy')
+
+        return imgs_db, imgs_q, GThard, GTsoft
+
+    def download(self):
+        pass
 
 class GardensPointDataset(Dataset):
     def __init__(self, destination: str = 'images/GardensPoint/'):
