@@ -73,7 +73,7 @@ for dataset in datasets:
 
             # Loop through dataset matches, copy images into the correct directory and set the [i, j] of the matrix to true to signify a TP match
             for i, row in match_dataset.iterrows():
-                shutil.copy(f"{row[f'scan_{scan_2_index}_image_path']}", f"{output_dir}/{dataset_name}/{scan_1_name}/{int(row[f'scan_{scan_1_index}_violation_id'])}.png")
+                shutil.copy(f"{row[f'scan_{scan_1_index}_image_path']}", f"{output_dir}/{dataset_name}/{scan_1_name}/{int(row[f'scan_{scan_1_index}_violation_id'])}.png")
                 shutil.copy(f"{row[f'scan_{scan_2_index}_image_path']}", f"{output_dir}/{dataset_name}/{scan_2_name}/{int(row[f'scan_{scan_2_index}_violation_id'])}.png")
                 try:
                     j = np.where(np.array(ids_q) == row[f'scan_{scan_2_index}_violation_id'])[0][0]
