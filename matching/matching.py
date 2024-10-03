@@ -64,8 +64,10 @@ def thresholding(S: np.ndarray, thresh: Union[str, float]) -> np.ndarray:
     if thresh == 'auto':
         mu = np.median(S)
         sig = np.median(np.abs(S - mu)) / 0.675
-        thresh = norm.ppf(1 - 1e-6, loc=mu, scale=sig)
-
+        ppf = norm.ppf(1 - 1e-6, loc=mu, scale=sig)
+        interval_value = np.std(S)*ppf
+        thresh = mu+interval_value
+        
     M = S >= thresh
 
     return M
