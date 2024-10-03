@@ -23,7 +23,7 @@ import os
 from evaluation.metrics import createPR, recallAt100precision, recallAtK
 from evaluation import show_correct_and_wrong_matches
 from matching import matching
-from datasets.load_dataset import GardensPointDataset, StLuciaDataset, SFUDataset
+from datasets.load_dataset import GardensPointDataset, StLuciaDataset, SFUDataset, HTT_example
 import numpy as np
 
 from matplotlib import pyplot as plt
@@ -32,9 +32,12 @@ from matplotlib import pyplot as plt
 def main():
     parser = argparse.ArgumentParser(description='Visual Place Recognition: A Tutorial. Code repository supplementing our paper.')
     parser.add_argument('--descriptor', type=str, default='HDC-DELF', choices=['HDC-DELF', 'AlexNet', 'NetVLAD', 'PatchNetVLAD', 'CosPlace', 'EigenPlaces', 'SAD'], help='Select descriptor (default: HDC-DELF)')
-    parser.add_argument('--dataset', type=str, default='GardensPoint', choices=['GardensPoint', 'StLucia', 'SFU'], help='Select dataset (default: GardensPoint)')
+    parser.add_argument('--dataset', type=str, default='HTT_example', choices=['GardensPoint', 'StLucia', 'SFU', 'HTT_example'], help='Select dataset (default: GardensPoint)')
     args = parser.parse_args()
 
+    os.makedirs('results', exist_ok=True)
+    os.makedirs(f'results/{args.dataset}', exist_ok=True)
+    output_dir = f'results/{args.dataset}'
     print('========== Start VPR with {} descriptor on dataset {}'.format(args.descriptor, args.dataset))
 
     # load dataset
@@ -45,6 +48,11 @@ def main():
         dataset = StLuciaDataset()
     elif args.dataset == 'SFU':
         dataset = SFUDataset()
+    elif args.dataset == 'HTT_example':
+        violaiton_scan = '20-ANG2312_00089-ANG2401_00089'
+        os.makedirs(f'results/{args.dataset}/{violaiton_scan}', exist_ok=True)
+        output_dir = f'results/{args.dataset}/{violaiton_scan}'
+        dataset = HTT_example(destination=f'images/HTT_example/{violaiton_scan}')
     else:
         raise ValueError('Unknown dataset: ' + args.dataset)
 
@@ -127,7 +135,7 @@ def main():
     M1 = matching.best_match_per_query(S)
 
     # thresholding -> Multi-match VPR
-    M2 = matching.thresholding(S, 'auto')
+    M2 = matching.thresholding(S, 0.4)
     TP = np.argwhere(M2 & GThard)  # true positives
     FP = np.argwhere(M2 & ~GTsoft)  # false positives
 
@@ -135,18 +143,20 @@ def main():
     print('===== Evaluation')
     # show correct and wrong image matches
     show_correct_and_wrong_matches.show(
-        imgs_db, imgs_q, TP, FP)  # show random matches
+        imgs_db, imgs_q, TP, FP, output_dir=output_dir)  # show random matches
 
     # show M's
-    fig = plt.figure()
-    ax1 = fig.add_subplot(121)
-    ax1.imshow(M1)
-    ax1.axis('off')
-    ax1.set_title('Best match per query')
-    ax2 = fig.add_subplot(122)
-    ax2.imshow(M2)
-    ax2.axis('off')
-    ax2.set_title('Thresholding S>=thresh')
+    fig, axs = plt.subplots(3)
+    axs[0].imshow(GThard)
+    axs[0].axis('off')
+    axs[0].set_title('GT')
+    axs[1].imshow(M1)
+    axs[1].axis('off')
+    axs[1].set_title('Best match per query')
+    axs[2].imshow(M2)
+    axs[2].axis('off')
+    axs[2].set_title('Thresholding S>=thresh')
+    fig.savefig(f'{output_dir}/M.png')
 
     # PR-curve
     P, R = createPR(S, GThard, GTsoft, matching='multi', n_thresh=100)
@@ -158,7 +168,7 @@ def main():
     plt.title('Result on GardensPoint day_right--night_right')
     plt.grid('on')
     plt.draw()
-
+    plt.savefig(f'{output_dir}/PR.png')
     # area under curve (AUC)
     AUC = np.trapz(P, R)
     print(f'\n===== AUC (area under curve): {AUC:.3f}')
@@ -168,11 +178,13 @@ def main():
     print(f'\n===== R@100P (maximum recall at 100% precision): {maxR:.2f}')
 
     # recall at K
+    
     RatK = {}
-    for K in [1, 5, 10]:
+    K_val = [1, min((5, S.shape[0])), min((10, S.shape[0]))]
+    for K in K_val:
         RatK[K] = recallAtK(S, GThard, GTsoft, K=K)
 
-    print(f'\n===== recall@K (R@K) -- R@1: {RatK[1]:.3f}, R@5: {RatK[5]:.3f}, R@10: {RatK[10]:.3f}')
+    print(f'\n===== recall@K (R@K) -- R@1: {RatK[K_val[0]]:.3f}, R@5: {RatK[K_val[1]]:.3f}, R@10: {RatK[K_val[2]]:.3f}')
 
     plt.show()
 
