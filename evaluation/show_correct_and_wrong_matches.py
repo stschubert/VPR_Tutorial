@@ -53,6 +53,7 @@ def show(
     TP: np.ndarray, 
     FP: np.ndarray, 
     M: Optional[np.ndarray] = None,
+    output_dir: Optional[str] = None
 ) -> None:
     """
     Displays a visual comparison of true positive and false positive image pairs
@@ -64,6 +65,7 @@ def show(
         TP (np.ndarray): A two-dimensional array containing the indices of true positive pairs.
         FP (np.ndarray): A two-dimensional array containing the indices of false positive pairs.
         M (Optional[np.ndarray], optional): A two-dimensional array representing the similarity matrix. Defaults to None.
+        output_dir (Optional[str], optional): Output directory to save the image
 
     Returns:
         None: This function displays the comparison result using matplotlib.pyplot but does not return any value.
@@ -98,7 +100,7 @@ def show(
         img_fp = add_frame(np.concatenate(
             [db_fp, q_fp], axis=1), [162, 20, 47])
         img = np.concatenate([img, img_fp], axis=0)
-    except:
+    except Exception as e:
         pass
 
     # concat M
@@ -113,3 +115,5 @@ def show(
     plt.imshow(img)
     plt.axis('off')
     plt.title('Examples for correct and wrong matches from S>=thresh')
+    if output_dir is not None:
+        plt.savefig(f'{output_dir}/example.png')
