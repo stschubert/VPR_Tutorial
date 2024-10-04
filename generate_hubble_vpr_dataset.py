@@ -87,3 +87,10 @@ for dataset in datasets:
             # Save matrices into output directories
             np.save(f'{output_dir}/{dataset_name}/M_gt_hard.npy', M_gt_hard)
             np.save(f'{output_dir}/{dataset_name}/M_gt_soft.npy', M_gt_hard)
+
+            # Save dataset info in each one
+            try:
+                shutil.copy(f'{input_dir}/{dataset}/{scan_1_name}.csv', f"{output_dir}/{dataset_name}/{scan_1_name}.csv")
+                shutil.copy(f'{input_dir}/{dataset}/{scan_2_name}.csv', f"{output_dir}/{dataset_name}/{scan_2_name}.csv")
+            except Exception as e:
+                continue
