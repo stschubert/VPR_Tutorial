@@ -41,9 +41,14 @@ class HTT_example(Dataset):
         self.destination = destination
     
     def load(self) -> Tuple[List[np.ndarray], List[np.ndarray], np.ndarray, np.ndarray]:
-        print('===== Load dataset Hubble Example ANG2312_00089--ANG2401_00089')
+        print(f'===== Load dataset Hubble Example {self.destination}')
 
         # load images
+        imgs_id = np.load(self.destination + '/image_order.npy', allow_pickle=True)
+
+        self.imgs_id_db = imgs_id[()][self.dir1]
+        self.imgs_id_q = imgs_id[()][self.dir2]
+
         fns_db = sorted(glob(self.destination + f'/{self.dir1}/*.png'))
         fns_q = sorted(glob(self.destination + f'/{self.dir2}/*.png'))
 
@@ -57,7 +62,7 @@ class HTT_example(Dataset):
         GTsoft = np.load(self.destination + '/M_gt_soft.npy')
 
         return imgs_db, imgs_q, GThard, GTsoft
-
+    
     def download(self):
         pass
     
