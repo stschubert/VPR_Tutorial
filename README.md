@@ -1,3 +1,32 @@
+# Hubble Violations Through Time (VTT) Visual Place Recognition (VPR)
+
+Work in progress repo repurposing the VPR repo for violations through time. This repo is in active development so some things wont work.
+
+## Overview
+### Installing dependencies
+
+For now I cannot get the pip requirements to work (faiss does not install correctly) so I am using the default conda environment:
+* Install conda
+* Run `conda env create --name vpr --file=.devcontainer/environment.yml`
+* Then activate the environment: `conda activate vpr`
+
+### Running on our data 
+Please generate the VTT dataset using the scripts located here: [violations through time](https://github.com/HackPartners/htt_dataset_processing), and copy the output directory `image_dataset` into this repo.
+
+Then:
+* Generate the dataset in the formats for VTT by running `python3 generate_hubble_vpr_dataset.py`. This will create a new directory `images/HTT_example` containing distinct datasets for each violation type comparing a scan with its previous scan from a different batch
+* To run on one dataset run hubble_baseline_demo.py with the following prameters
+    `python3 hubble_baseline_demo.py --descriptor [Feature descriptor to use] --dataset [Dataset to run on (Leave out images/HTT_example in string)] --output [Optional: output dir (defaults to results)]`
+* To run on all datasets use the helper bash script supplied: `bash run_baseline.bash`
+
+### Optional filters (WIP)
+
+* `--iou [Float]`:  Minimum IoU between violation bounding boxes. Any below will be disregarded as matches (This does not work very well in practice)
+* `--distance [Float]`: Maximum distance (in km) that a query violation can be from the one being considered as a match. Any further away than this will be disregarded (This works as well as our GPS data allows)
+* WIP: `--local_descriptor [Option of featire extractor] (Only HDF-DELF implemented at this time)`: Run a second stage feature extractor on violation bounding boxes. The outputs will then ensure that the global features and local violation features are above a matching threshold to be considered. (This is getting some stage results, potentially as bounding boxes are different sizes but also as distance thresholding can be a little tricky. Left partially implemented for now)
+* WIP: `--local_descriptor_normalised [Option of featire extractor] (Only HDF-DELF implemented at this time)`: Same as above but it finds the largest bounding box between each violation being considered for matching and uses this for generating local features. This has only been partially implemented at this point, still needs work
+
+Old readme:
 # Visual Place Recognition: A Tutorial
 Work in progress: This repository provides the example code from <a href="https://doi.org/10.1109/MRA.2023.3310859">our paper "Visual Place Recognition: A Tutorial"</a>.
 The code performs VPR on the GardensPoint day_right--night_right dataset. Output is a plotted pr-curve, matching decisions, two examples for a true-positive and a false-positive matching, and the AUC performance, as shown below.
