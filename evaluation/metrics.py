@@ -40,6 +40,9 @@ def createPR(S_in, GThard, GTsoft=None, matching='multi', n_thresh=100):
     assert (matching in ['single', 'multi']),"matching should contain one of the following strings: [single, multi]"
     assert (n_thresh > 1),"n_thresh must be >1"
 
+    if GTsoft is not None:
+       print("===== WARNING GTSoft is being used, which may affect evaluation results. Please see https://github.com/stschubert/VPR_Tutorial for more details.")
+
     # ensure logical datatype in GT and GTsoft
     GT = GThard.astype('bool')
     if GTsoft is not None:
@@ -111,6 +114,9 @@ def recallAt100precision(S_in, GThard, GTsoft=None, matching='multi', n_thresh=1
     assert (matching in ['single', 'multi']),"matching should contain one of the following strings: [single, multi]"
     assert (n_thresh > 1),"n_thresh must be >1"
 
+    if GTsoft is not None:
+        print("===== WARNING GTSoft is being used, which may affect evaluation results. Please see https://github.com/stschubert/VPR_Tutorial for more details.")
+
     # get precision-recall curve
     P, R = createPR(S_in, GThard, GTsoft, matching=matching, n_thresh=n_thresh)
     P = np.array(P)
@@ -145,6 +151,9 @@ def recallAtK(S_in, GThard, GTsoft=None, K=1):
         assert (S_in.shape == GTsoft.shape),"S_in and GTsoft must have the same shape"
     assert (S_in.ndim == 2),"S_in, GThard and GTsoft must be two-dimensional"
     assert (K >= 1),"K must be >=1"
+
+    if GTsoft is not None:
+        print("===== WARNING GTSoft is being used, which may affect evaluation results. Please see https://github.com/stschubert/VPR_Tutorial for more details.")
 
     # ensure logical datatype in GT and GTsoft
     GT = GThard.astype('bool')
