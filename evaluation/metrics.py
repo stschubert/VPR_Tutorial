@@ -40,8 +40,8 @@ def createPR(S_in, GThard, GTsoft=None, matching='multi', n_thresh=100):
     assert (matching in ['single', 'multi']),"matching should contain one of the following strings: [single, multi]"
     assert (n_thresh > 1),"n_thresh must be >1"
 
-    if GTsoft is not None:
-       print("===== WARNING GTSoft is being used, which may affect evaluation results. Please see https://github.com/stschubert/VPR_Tutorial for more details.")
+    if GTsoft is not None and matching == 'single':
+       print("===== WARNING GTSoft is being used, which was mainly intended for multi-matching VPR. Please see https://github.com/stschubert/VPR_Tutorial for more details.")
 
     # ensure logical datatype in GT and GTsoft
     GT = GThard.astype('bool')
