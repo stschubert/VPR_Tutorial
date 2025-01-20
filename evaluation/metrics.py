@@ -41,7 +41,11 @@ def createPR(S_in, GThard, GTsoft=None, matching='multi', n_thresh=100):
     assert (n_thresh > 1),"n_thresh must be >1"
 
     if GTsoft is not None and matching == 'single':
-       print("===== WARNING GTSoft is being used, which was mainly intended for multi-matching VPR. Please see https://github.com/stschubert/VPR_Tutorial for more details.")
+        raise ValueError(
+            "GTSoft with single matching is not supported. "
+            "Please use dilated hard ground truth directly. "
+            "For more details, visit: https://github.com/stschubert/VPR_Tutorial"
+        )
 
     # ensure logical datatype in GT and GTsoft
     GT = GThard.astype('bool')
@@ -115,7 +119,11 @@ def recallAt100precision(S_in, GThard, GTsoft=None, matching='multi', n_thresh=1
     assert (n_thresh > 1),"n_thresh must be >1"
 
     if GTsoft is not None and matching == 'single':
-        print("===== WARNING GTSoft is being used, which may affect evaluation results. Please see https://github.com/stschubert/VPR_Tutorial for more details.")
+        raise ValueError(
+            "GTSoft with single matching is not supported. "
+            "Please use dilated hard ground truth directly. "
+            "For more details, visit: https://github.com/stschubert/VPR_Tutorial"
+        )
 
     # get precision-recall curve
     P, R = createPR(S_in, GThard, GTsoft, matching=matching, n_thresh=n_thresh)
