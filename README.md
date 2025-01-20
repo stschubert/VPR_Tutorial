@@ -256,4 +256,4 @@ mamba create -n vprtutorial python numpy pytorch torchvision natsort tqdm opencv
 *Third party code. Not provided by the authors. Code implements the author's idea or can be used to implement the authors idea.
 
 ## Soft Ground Truth for evaluation
-In the evaluation metrics, a soft ground truth matrix can be used to ignore images with a very small visual overlap to avoid penalization in recall and precision analysis (see Equation 6 in [our paper](https://ieeexplore.ieee.org/document/10261441)). This may have the consequence of reducing your overall precision and recall accuracy by eliminating potential matches from the evaluation. Please check whether using the soft ground truth is appropriate for your analysis requirements.
+In the evaluation metrics, a soft ground truth matrix can be used to ignore images with a very small visual overlap to avoid penalization in recall and precision analysis (see Equation 6 in [our paper](https://ieeexplore.ieee.org/document/10261441)). This currently is only supported for `matching="multi"`. For use in single matching, please use a dilated hard ground truth directly.
