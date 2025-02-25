@@ -53,7 +53,6 @@ python3 demo.py
 |:-------------------------:|:-------------------------:|:-------------------------:|
 |<img src="output_images/pr_curve.jpg" alt="precision-recall curve P=f(R)" height="200" width="315">  |  <img src="output_images/matchings.jpg" alt="output_images/matchings.jpg" height="200" width="401"> | <img src="output_images/examples_tp_fp.jpg" alt="Examples for true positive (TP) and false positive (FP)" height="200" width="315">| 
 
-
 ## Requirements
 The code was tested with the library versions listed in [requirements.txt](./requirements.txt). Note that Tensorflow or PyTorch is only required if the corresponding image descriptor is used. If you use pip, simply:
 ```bash
@@ -255,3 +254,6 @@ mamba create -n vprtutorial python numpy pytorch torchvision natsort tqdm opencv
 </table>
 
 *Third party code. Not provided by the authors. Code implements the author's idea or can be used to implement the authors idea.
+
+## Soft Ground Truth for evaluation
+In the evaluation metrics, a soft ground truth matrix can be used to ignore images with a very small visual overlap to avoid penalization in recall and precision analysis (see Equation 6 in [our paper](https://ieeexplore.ieee.org/document/10261441)). This currently is only supported for `matching="multi"`. For use in single matching, please use a dilated hard ground truth directly.

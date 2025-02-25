@@ -40,6 +40,13 @@ def createPR(S_in, GThard, GTsoft=None, matching='multi', n_thresh=100):
     assert (matching in ['single', 'multi']),"matching should contain one of the following strings: [single, multi]"
     assert (n_thresh > 1),"n_thresh must be >1"
 
+    if GTsoft is not None and matching == 'single':
+        raise ValueError(
+            "GTSoft with single matching is not supported. "
+            "Please use dilated hard ground truth directly. "
+            "For more details, visit: https://github.com/stschubert/VPR_Tutorial"
+        )
+
     # ensure logical datatype in GT and GTsoft
     GT = GThard.astype('bool')
     if GTsoft is not None:
@@ -111,6 +118,13 @@ def recallAt100precision(S_in, GThard, GTsoft=None, matching='multi', n_thresh=1
     assert (matching in ['single', 'multi']),"matching should contain one of the following strings: [single, multi]"
     assert (n_thresh > 1),"n_thresh must be >1"
 
+    if GTsoft is not None and matching == 'single':
+        raise ValueError(
+            "GTSoft with single matching is not supported. "
+            "Please use dilated hard ground truth directly. "
+            "For more details, visit: https://github.com/stschubert/VPR_Tutorial"
+        )
+
     # get precision-recall curve
     P, R = createPR(S_in, GThard, GTsoft, matching=matching, n_thresh=n_thresh)
     P = np.array(P)
@@ -125,34 +139,26 @@ def recallAt100precision(S_in, GThard, GTsoft=None, matching='multi', n_thresh=1
     return R
 
 
-def recallAtK(S_in, GThard, GTsoft=None, K=1):
+def recallAtK(S, GT, K=1):
     """
-    Calculates the recall@K for a given similarity matrix S_in and ground truth matrices 
-    GThard and GTsoft.
+    Calculates the recall@K for a given similarity matrix S and ground truth matrix GT.
+    Note that this method does not support GTsoft - instead, please directly provide
+    the dilated ground truth matrix as GT.
 
-    The matrices S_in, GThard and GTsoft are two-dimensional and should all have the
-    same shape.
-    The matrices GThard and GTsoft should be binary matrices, where the entries are
-    only zeros or ones.
-    The matrix S_in should have continuous values between -Inf and Inf. Higher values
+    The matrices S and GT are two-dimensional and should all have the same shape.
+    The matrix GT should be binary, where the entries are only zeros or ones.
+    The matrix S should have continuous values between -Inf and Inf. Higher values
     indicate higher similarity.
     The integer K>=1 defines the number of matching candidates that are selected and
     that must contain an actually matching image pair.
     """
 
-    assert (S_in.shape == GThard.shape),"S_in and GThard must have the same shape"
-    if GTsoft is not None:
-        assert (S_in.shape == GTsoft.shape),"S_in and GTsoft must have the same shape"
-    assert (S_in.ndim == 2),"S_in, GThard and GTsoft must be two-dimensional"
+    assert (S.shape == GT.shape),"S and GT must have the same shape"
+    assert (S.ndim == 2),"S and GT must be two-dimensional"
     assert (K >= 1),"K must be >=1"
 
-    # ensure logical datatype in GT and GTsoft
-    GT = GThard.astype('bool')
-    GTsoft = GTsoft.astype('bool')
-
-    # copy S and set elements that are only true in GTsoft to min(S) to ignore them during evaluation
-    S = S_in.copy()
-    S[GTsoft & ~GT] = S.min()
+    # ensure logical datatype in GT
+    GT = GT.astype('bool')
 
     # discard all query images without an actually matching database image
     j = GT.sum(0) > 0 # columns with matches
