@@ -35,7 +35,9 @@ def createPR(S_in, GThard, GTsoft=None, matching='multi', n_thresh=100):
     The integer n_tresh controls the number of threshold values and should be >1.
     """
 
-    assert (S_in.shape == GThard.shape and S_in.shape == GTsoft.shape),"S_in, GThard and GTsoft must have the same shape"
+    assert (S_in.shape == GThard.shape),"S_in and GThard must have the same shape"
+    if GTsoft is not None:
+        assert (S_in.shape == GTsoft.shape),"S_in and GTsoft must have the same shape"
     assert (S_in.ndim == 2),"S_in, GThard and GTsoft must be two-dimensional"
     assert (matching in ['single', 'multi']),"matching should contain one of the following strings: [single, multi]"
     assert (n_thresh > 1),"n_thresh must be >1"
